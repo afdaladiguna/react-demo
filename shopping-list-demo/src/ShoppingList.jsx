@@ -1,17 +1,30 @@
-import ShoppingListItem from './ShoppingListItem';
+import { useState } from 'react';
+import ShoppingListForm from './ShoppingListForm';
+import { v4 as uuid } from 'uuid';
 
-export default function ShoppingList({ items }) {
+export default function ShoppingList() {
+  const [items, setItems] = useState([
+    { id: uuid(), product: 'Apples', qty: 7 },
+    { id: uuid(), product: 'Apples', qty: 7 },
+  ]);
+
+  const addItem = (item) => {
+    setItems((currItems) => {
+      return [...currItems, { ...item, id: uuid() }];
+    });
+  };
+
   return (
-    <ul>
-      {items.map((i) => (
-        // <ShoppingListItem
-        //   key={i.id}
-        //   item={i.item}
-        //   qty={i.qty}
-        //   completed={i.completed}
-        // />
-        <ShoppingListItem key={i.id} {...i} />
-      ))}
-    </ul>
+    <div>
+      <h1>Shopping List</h1>
+      <ul>
+        {items.map((i) => (
+          <li key={i.id}>
+            {i.product} - {i.qty}
+          </li>
+        ))}
+      </ul>
+      <ShoppingListForm addItem={addItem} />
+    </div>
   );
 }
